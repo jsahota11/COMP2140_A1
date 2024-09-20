@@ -6,16 +6,19 @@ import java.io.File;
 public class SahotaJatinderA1Q4 {
     public static void main(String[] args) {
         int[] input = null;
-        try{input = fileToArray(new File("TestThreeSum.txt"));}
+        try{input = fileToArray(new File(args[0]));}
         catch(FileNotFoundException e){
             System.out.println("File not FOUND.");
         }
 
-        boolean foundSum = hasThreeSum(input);
+        String[] results = hasThreeSum(input);
+        boolean foundSum = Boolean.parseBoolean(results[0]);
         if (foundSum){
-            System.out.println("Yes, three elements of the array sum to 0.\nThe elements are: ");
+            System.out.println("Yes, three elements of the array sum to 0.\nThe elements are: "
+                    + Integer.parseInt(results[1]) + ", " + Integer.parseInt(results[2]) + ", "
+                    + Integer.parseInt(results[3]));
         } else{
-            System.out.println("No");
+            System.out.println("No, there are no three integers that sum to 0.");
         }
     }
 
@@ -33,7 +36,7 @@ public class SahotaJatinderA1Q4 {
         return sortedArr;
     }
 
-    public static boolean hasTargetSum(int[] A, int j, int k, int t){
+    public static String[] hasTargetSum(int[] A, int j, int k, int t){
         boolean answer = false;
         while ((j<k)&&(!answer)){
             if(A[j] + A[k] < t){
@@ -44,19 +47,29 @@ public class SahotaJatinderA1Q4 {
                 answer = true;
             }
         }
-        return answer;
+
+        String[] results = new String[4];
+        results[0] = Boolean.toString(answer);
+        if (answer){
+            results[1] = Integer.toString(A[j]);
+            results[2] = Integer.toString(A[k]);
+            results[3] = Integer.toString(-t);
+        }
+        return results;
     }
 
-    public static boolean hasThreeSum(int[] A){
+    public static String[] hasThreeSum(int[] A){
         int n = A.length;
         int i = 0;
         boolean answer = false;
+        String[] results = new String[4];
 
         while ((i < n-2) && (!answer)){
-            answer = hasTargetSum(A,i+1,n-1,-A[i]);
+            results = hasTargetSum(A,i+1,n-1,-A[i]);
+            answer = Boolean.parseBoolean(results[0]);
             i = i+1;
         }
 
-        return answer;
+        return results;
     }
 }
